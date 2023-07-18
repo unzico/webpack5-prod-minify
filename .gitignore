@@ -1,0 +1,19 @@
+# build, dist
+/build/
+/dist/
+
+# yarn without Zero-Installs
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# environment
+.env
+
+# lock files
+yarn.lock
+package-lock.json
