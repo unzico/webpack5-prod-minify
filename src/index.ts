@@ -1,10 +1,9 @@
-async function main() {
-  console.log("Your code here.");
+import { matchSorter } from "match-sorter";
+
+function main() {
+  const results = matchSorter([], "");
+
+  return results;
 }
 
-main()
-  .then(() => process.exit())
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  });
+main();
