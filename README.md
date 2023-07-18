@@ -1,42 +1,59 @@
-# A starter kit for creating NodeJS apps
+## Usage
 
-This starter kit uses
+Install the dependencies:
+> yarn
 
-- Babel
-- TypeScript
-- Prettier
-- Nodemon
+Build the development version:
+> yarn dev
 
-It supports
+Open the `index.html` file in a browser, e.g. Google Chrome.
 
-- absolute path imports
-- transpiling TypeScript files
-- auto-restart on changes to files in `src` folder
+Open the developer console of the browser: no error message.
 
-# Guide
+Build production version:
+> yarn prod
 
-> **This starter kit assumes, you are using Yarn instead of NPM.**
+Reload the opened `index.html` file in the browser.
 
-## Install dependencies
+Check the developer console of the browser: error message (`Uncaught SyntaxError: Invalid or unexpected token`)
 
+## Explanation
+
+The `match-sorter` dependency includes a dependency called `remove-accents`, that maps characters with a [diacritic](https://en.wikipedia.org/wiki/Diacritic) to a character without a diacritic, e.g. `À` to `A`. This dependency is used in the `match-sorter` dependency to remove accents from strings before sorting them.
+
+The original code is similar to this:
+
+```js
+var characterMap = {
+	"À": "A",
+	"Á": "A",
+	"Â": "A",
+	"Ã": "A",
+	"Ä": "A",
+  // ...
+};
 ```
-yarn
+
+During the production build process (enabled by `config.mode === "production"`), webpack minifies the code. This results in the following code:
+
+```js
+// prettified for readability
+var r = {
+  // notice the missing quotes around the keys
+	À: "A",
+	Á: "A",
+	Â: "A",
+	Ã: "A",
+	Ä: "A",
+  // ...
+};
 ```
 
-## Run app in development
+The browser interprets this as a syntax error, because the keys are not quoted. This is not a problem in development mode, because the code is not minified and the quotes aren't removed. When we take a look at the source code in the browser, the code looks like this:
 
-```
-yarn dev
-```
+![Source code viewed in browser](image.png)
 
-## Build production app
+The result: `Uncaught SyntaxError: Invalid or unexpected token (at main.js:233:14)`.
+As soon as we put the key in quotes, the error is gone.
 
-```
-yarn build
-```
-
-## Run app in production
-
-```
-yarn start
-```
+In short: the minifier shouldn't remove the quotes from characters that have a diacritic.
