@@ -1,17 +1,17 @@
 ## Usage
 
 Install the dependencies:
-> yarn
+> npm install
 
 Build the development version:
-> yarn dev
+> npm run dev
 
 Open the `index.html` file in a browser, e.g. Google Chrome.
 
 Open the developer console of the browser: no error message.
 
 Build production version:
-> yarn prod
+> npm run prod
 
 Reload the opened `index.html` file in the browser.
 
